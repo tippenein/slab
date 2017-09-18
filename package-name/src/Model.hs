@@ -2,6 +2,8 @@
 module Model where
 
 import ClassyPrelude.Yesod
+import Model.Instance
+import qualified Text.Email.Validate as Email
 
 -- You can define all of your database entities in the entities file.
 -- You can find more information on persistent and how to declare entities
@@ -10,8 +12,10 @@ import ClassyPrelude.Yesod
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 User json sql=users
   ident Text
-  password Text Maybe
+  name Text Maybe
+  email Email.EmailAddress Maybe
   UniqueUser ident
+  UniqueEmail email
   deriving Show Typeable
 
 UserRole sql=user_roles
@@ -19,13 +23,6 @@ UserRole sql=user_roles
     role Role
     UniqueUserRole user_id role
     deriving Show
-
-Email json sql=emails
-  email Text
-  userId UserId Maybe
-  verkey Text Maybe
-  UniqueEmail email
-  deriving Show
 
 Post
   title Text

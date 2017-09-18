@@ -10,7 +10,7 @@ module Model.User where
 
 import Database.Esqueleto
 import Import.NoFoundation hiding (on, (==.), Value)
-import Model.Instances
+import Model.Instance
 
 getUserRoles :: UserId -> DB [Role]
 getUserRoles uid = do
@@ -44,7 +44,8 @@ authenticateUser Creds{..} = do
       user_id <- insert User
         { userIdent = credsIdent
         , userName = Nothing
+        , userEmail = Nothing
         }
 
-      _ <- insert $ UserRole user_id Fan
+      _ <- insert $ UserRole user_id Plebe
       return $ Authenticated user_id

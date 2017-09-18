@@ -41,6 +41,7 @@ dependencies:
 - persistent >=2.0 && <2.8
 - persistent-postgresql >=2.1.1 && <2.8
 - persistent-template >=2.0 && <2.8
+- esqueleto
 - template-haskell
 - shakespeare >=2.0 && <2.1
 - hjsmin >=0.1 && <0.3
@@ -64,6 +65,8 @@ dependencies:
 - time
 - case-insensitive
 - wai
+- uuid
+- email-validate
 - http-types
 
 # The library contains all of our application code. The executable
