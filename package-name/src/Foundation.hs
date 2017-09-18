@@ -2,27 +2,26 @@
 
 module Foundation where
 
-import Import.NoFoundation
-import AppType
-import Route
-import Text.Hamlet          (hamletFile)
-import Text.Jasmine         (minifym)
+import           Import.NoFoundation
+import           Text.Hamlet (hamletFile)
+import           Text.Jasmine (minifym)
+
+import           AppType
+import qualified Model.User as User
+import qualified Role as Role
 
 -- Used only when in "auth-dummy-login" setting is enabled.
-import Yesod.Auth.Dummy
-import Yesod.Default.Util   (addStaticContentExternal)
+import           Yesod.Auth.Dummy
+import           Yesod.Default.Util (addStaticContentExternal)
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
 
 
--- This is where we define all of the routes in our application. For a full
--- explanation of the syntax, please see:
+mkYesodData "App" $(parseRoutesFile "config/routes")
+
 -- http://www.yesodweb.com/book/routing-and-handlers
 --
--- Note that this is really half the story; in Application.hs, mkYesodDispatch
--- generates the rest of the code. Please see the following documentation
--- for an explanation for this split:
 -- http://www.yesodweb.com/book/scaffolding-and-the-site-template#scaffolding-and-the-site-template_foundation_and_application_modules
 --
 -- This function also generates the following type synonyms:
@@ -149,14 +148,7 @@ instance YesodAuth App where
     -- Override the above two destinations when a Referer: header is present
     redirectToReferer _ = True
 
-    authenticate creds = runDB $ do
-        x <- getBy $ UniqueUser $ credsIdent creds
-        case x of
-            Just (Entity uid _) -> return $ Authenticated uid
-            Nothing -> Authenticated <$> insert User
-                { userIdent = credsIdent creds
-                , userPassword = Nothing
-                }
+    authenticate = runDB . User.authenticateUser
 
     -- You can add other plugins like Google Email, email or OAuth here
     authPlugins app = [] ++ extraAuthPlugins

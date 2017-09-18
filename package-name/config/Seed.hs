@@ -2,12 +2,14 @@
 
 import Import
 
+import Model.Instance (Role(..))
 import Database.Persist.Postgresql (pgConnStr, withPostgresqlConn, runSqlConn)
 import Control.Monad.Logger (runStderrLoggingT)
 
-insertUser :: MonadIO m => (Text, Text) -> ReaderT SqlBackend m ()
-insertUser (ident, pass) = do
-  insert_ $ User ident (Just pass)
+insertUser :: MonadIO m => (Text, Role) -> ReaderT SqlBackend m ()
+insertUser (ident, role) = do
+  i <- insert $ User ident Nothing Nothing
+  insert_ $ UserRole i role
 
 insertPost :: MonadIO m => (Text, Text) -> ReaderT SqlBackend m ()
 insertPost (title, content) = do
@@ -15,9 +17,10 @@ insertPost (title, content) = do
   p <- insert $ Post title content
   insert_ $ Comment p ("Cool, you said " <> content)
 
-users :: [(Text, Text)]
+users :: [(Text, Role)]
 users = [
-    ("user@example.com", "password")
+    ("garybusey@.com", Admin)
+  , ("not-garybusey@.com", Plebe)
   ]
 
 posts :: [(Text, Text)]

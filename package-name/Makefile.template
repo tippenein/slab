@@ -10,7 +10,6 @@ check:
 
 clean:
 	stack clean
-	stack --docker clean
 
 seed:
 	stack exec seed

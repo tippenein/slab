@@ -1,19 +1,21 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module Model.Instance
-  ( Role(..)
-  , UUID
-  ) where
+module Model.Instance where
 
 import           ClassyPrelude.Yesod
 
 import qualified Data.Text.Encoding as Encoding
-import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as B8
 import           Data.UUID (UUID)
 import qualified Data.UUID as UUID
 import           Database.Persist.Sql
 import qualified Text.Email.Validate as Email
+
+data Role = Admin | Plebe
+  deriving (Show, Read, Eq)
+
+-- allow us to use this sum type in the database layer (Model.hs)
+derivePersistField "Role"
 
 instance PersistField UUID where
   toPersistValue u = PersistDbSpecific . B8.pack . UUID.toString $ u
@@ -25,12 +27,6 @@ instance PersistField UUID where
 
 instance PersistFieldSql UUID where
   sqlType _ = SqlOther "uuid"
-
-data Role = Admin | Plebe
-  deriving (Show, Read, Eq)
-
--- allow us to use this sum type in the database layer (Model.hs)
-derivePersistField "Role"
 
 instance PersistField Email.EmailAddress where
   toPersistValue e = PersistDbSpecific . Email.toByteString $ e
