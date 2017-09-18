@@ -15,7 +15,6 @@ User json sql=users
   name Text Maybe
   email Email.EmailAddress Maybe
   UniqueUser ident
-  UniqueEmail email
   deriving Show Typeable
 
 UserRole sql=user_roles

@@ -8,8 +8,10 @@
 
 module Model.User where
 
+import qualified Data.Text.Encoding as Encoding
 import Database.Esqueleto
 import Import.NoFoundation hiding (on, (==.), Value)
+import Text.Email.Validate   as Email
 import Model.Instance
 
 getUserRoles :: UserId -> DB [Role]
@@ -44,8 +46,10 @@ authenticateUser Creds{..} = do
       user_id <- insert User
         { userIdent = credsIdent
         , userName = Nothing
-        , userEmail = Nothing
+        , userEmail = mkEmail "derp@derp.com"
         }
 
       _ <- insert $ UserRole user_id Plebe
       return $ Authenticated user_id
+
+mkEmail = hush . Email.validate . Encoding.encodeUtf8
