@@ -1,7 +1,7 @@
 .PHONY: check clean seed db dev
 
-EXE_NAME := PROJECTNAME
-base_db_name = PROJECTNAME
+EXE_NAME := ${packageName}
+base_db_name = ${packageName}
 
 all: db db_test check seed dev
 
@@ -16,7 +16,7 @@ seed:
 	stack exec seed
 
 ghci:
-	stack ghci --ghci-options -fobject-code PROJECTNAME:lib
+	stack ghci --ghci-options -fobject-code ${packageName}:lib
 
 dev:
 	stack exec -- yesod devel

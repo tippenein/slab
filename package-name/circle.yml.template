@@ -1,0 +1,26 @@
+machine:
+  services:
+    - postgresql
+
+database:
+  override:
+    - createuser -s -d ${packageName}
+    - createdb ${packageName}_test
+
+dependencies:
+  cache_directories:
+    - "~/.cabal"
+    - "~/.local"
+    - "~/.stack"
+    - ".stack-work"
+  pre:
+    - curl -L https://github.com/commercialhaskell/stack/releases/download/v1.5.1/stack-1.5.1-linux-x86_64.tar.gz | tar zx -C /tmp
+    - sudo mv /tmp/stack-1.5.1-linux-x86_64/stack /usr/bin
+    - mkdir -p ./.bin
+  override:
+    - stack setup
+    - stack build --fast
+
+test:
+  override:
+    - ENV=test stack --no-terminal test
