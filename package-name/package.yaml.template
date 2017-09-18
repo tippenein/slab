@@ -82,7 +82,7 @@ library:
     else:
       ghc-options:
       - -Wall
-      - -Werror
+      # - -Werror
       - -fwarn-tabs
       - -fwarn-incomplete-patterns
 
