@@ -12,21 +12,32 @@ User json sql=users
   ident Text
   password Text Maybe
   UniqueUser ident
-  deriving Typeable
-  deriving Show
+  deriving Show Typeable
+
+UserRole sql=user_roles
+    user_id UserId
+    role Role
+    UniqueUserRole user_id role
+    deriving Show
+
 Email json sql=emails
   email Text
   userId UserId Maybe
   verkey Text Maybe
   UniqueEmail email
   deriving Show
+
 Post
   title Text
   content Text
+
 Comment
   post PostId
   content Text
 |]
+
+-- some nice material here
+-- https://pbrisbin.com/posts/writing_json_apis_with_yesod/
 
 -- { "id": 1, "title": "A title", "content": "The content" }
 instance ToJSON (Entity Post) where

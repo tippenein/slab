@@ -40,6 +40,7 @@ import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
 -- Don't forget to add new modules to your cabal file!
 import Handler.Common
 import Handler.Home
+import Handler.Users
 import Handler.Post
 import Handler.Posts
 import Handler.Comment

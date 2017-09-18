@@ -19,7 +19,7 @@ ghci:
 	stack ghci --ghci-options -fobject-code ${packageName}:lib
 
 dev:
-	stack exec -- yesod devel
+	yesod devel
 
 db:
 	psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = '$$(base_db_name)'" | grep -q 1 || psql -U postgres -c "CREATE DATABASE $$(base_db_name)"

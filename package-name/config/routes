@@ -5,6 +5,7 @@
 /robots.txt RobotsR GET
 
 / HomeR GET
+/users         GET
 /posts         PostsR GET POST
 /posts/#PostId PostR  GET PUT DELETE
 /posts/#PostId/comments            CommentsR GET POST

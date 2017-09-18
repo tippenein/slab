@@ -68,14 +68,15 @@ instance Yesod App where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            addStylesheet $ StaticR css_bootstrap_css
+            -- add to static/css/styles.css and uncomment below to pick up your css
+            -- addStylesheet $ StaticR css_styles_css
             $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
 
-    -- Routes not requiring authentication.
+    -- Routes authentication checking
     isAuthorized (AuthR _) _ = return Authorized
     isAuthorized HomeR _ = return Authorized
     isAuthorized FaviconR _ = return Authorized
@@ -86,6 +87,7 @@ instance Yesod App where
     isAuthorized (CommentsR _) _ = return Authorized
     isAuthorized (PostR _) _ = return Authorized
     isAuthorized PostsR _ = return Authorized
+    isAuthorized UsersR _ = checkAuth Role.canListUsers
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
@@ -114,6 +116,19 @@ instance Yesod App where
             || level == LevelError
 
     makeLogger = return . appLogger
+
+checkAuth :: (Maybe UserId -> DB Bool) -> Handler AuthResult
+checkAuth f = do
+  muid <- maybeAuthId
+  r <- runDB $ f muid
+  return $ if r then Authorized else Unauthorized "must be at least an Admin"
+
+isLoggedIn :: Handler AuthResult
+isLoggedIn = do
+  muid <- maybeAuthId
+  return $ case muid of
+      Nothing -> Unauthorized "You must log in to access this page"
+      Just _  -> Authorized
 
 -- How to run database actions.
 instance YesodPersist App where
