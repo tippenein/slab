@@ -16,3 +16,7 @@ Opinionated Yesod stack for APIs serving frontend applications.
 ## What you get
 
 A running yesod api with seeds, tests, CI (circle.yml), google oauth, a dumb-simple role system, among other things.
+
+## Using this to serve a frontend
+
+There is a `templates` directory with `default-layout-wrapper.hamlet` which you can serve your initial frontend with (probably linking in something from `static/js/bundle.js` ). The `default-layout.hamlet` is just included if you want to separate the wrapper and actual rendered html further. You can read more about those in yesod documentation.
