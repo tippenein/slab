@@ -6,12 +6,17 @@ A solid starting point for haskell APIs
 
 Opinionated Yesod stack for APIs serving frontend applications.
 
-## Organization
+# Get Started
 
-0. hi my-project --repository gh:tippenein/slab
-1. cd my-project
-2. make db_user
-3. make
+If you don't have stack, install it
+`curl -sSL https://get.haskellstack.org/ | sh`
+
+This uses `hi` to provide the bootstrapping
+0. stack install hi
+1. hi my-project --repository gh:tippenein/slab
+2. cd my-project
+3. make db_user
+4. make
 
 ## What you get
 
