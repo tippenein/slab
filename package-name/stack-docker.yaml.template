@@ -1,0 +1,34 @@
+resolver: lts-8.18
+
+# A package marked 'extra-dep: true' will only be built if demanded by a
+# non-dependency (i.e. a user package), and its test suites and benchmarks
+# will not be run. This is useful for tweaking upstream packages.
+packages:
+- '.'
+# Dependency packages to be pulled from upstream that are not in the resolver
+# (e.g., acme-missiles-0.3)
+extra-deps: []
+
+# Override default flag values for local packages and extra-deps
+flags: {}
+
+# Extra package databases containing global packages
+extra-package-dbs: []
+
+# Control whether we use the GHC we find on the path
+# system-ghc: true
+system-ghc: false
+
+docker:
+  enable: true
+
+image:
+  container:
+    # New image will be called snoyberg/yesodweb
+    name: ${author}/${packageName}
+    # Base it on the stack-run images
+    base: fpco/stack-run
+    # Include some config and static files in the image
+    add:
+      config: /app/config
+      static: /app/static

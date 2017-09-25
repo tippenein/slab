@@ -1,6 +1,7 @@
-.PHONY: check clean seed db dev
+.PHONY: check clean seed db dev image
 
 EXE_NAME := ${packageName}
+IMAGE_NAME := ${author}/${packageName}
 base_db_name = ${packageName}
 
 all: db db_test check seed dev
@@ -33,3 +34,9 @@ db_user:
 	createuser -P -s -e $$(base_db_name)
 
 db_reset: db_down db seed
+
+publish: image image_push
+image:
+	stack image container --stack-yaml=stack-docker.yaml
+image_push:
+	docker push "$(IMAGE_NAME):latest"
