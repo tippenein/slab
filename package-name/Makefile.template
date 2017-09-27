@@ -39,4 +39,4 @@ publish: image image_push
 image:
 	stack image container --stack-yaml=stack-docker.yaml
 image_push:
-	docker push "$(IMAGE_NAME):latest"
+	docker push "$$(IMAGE_NAME):latest"
