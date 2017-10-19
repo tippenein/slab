@@ -15,8 +15,8 @@ This uses `hi` to provide the bootstrapping
 
 0. stack install --resolver=lts-7.18 hi
   - if it fails `git clone git@github.com:trofi/hi && cd hi && stack install && cd ..`
-1. hi my-project --repository gh:tippenein/slab
-2. cd my-project
+1. hi myProject --repository gh:tippenein/slab
+2. cd myProject
 3. make db_user
 4. make
 
